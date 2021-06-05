@@ -18,3 +18,24 @@ def producto_api_view(request):
             producto_serializer.save()
             return Response(producto_serializer.data)
         return Response(producto_serializer.errors)
+
+@api_view(['GET','PUT','DELETE'])
+def detalle_producto_api_view(request,pk=None):
+
+    if request.method == 'GET':
+        producto = Producto.objects.filter(sku = pk).first()
+        producto_serializer = ProductoSerializer(producto)
+        return Response(producto_serializer.data)
+
+    elif request.method == 'PUT':
+        producto = Producto.objects.filter(sku = pk).first()
+        producto_serializer = ProductoSerializer(producto, data = request.data)
+        if producto_serializer.is_valid():
+            producto_serializer.save()
+            return Response(producto_serializer.data)
+        return Response(producto_serializer.errors)
+
+    elif request.method == 'DELETE':
+        producto = Producto.objects.filter(sku = pk).first()
+        producto.delete()
+        return Response('Producto Eliminado Exitosamente!')

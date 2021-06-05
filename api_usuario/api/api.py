@@ -19,3 +19,24 @@ def usuario_api_view(request):
             usuario_serializer.save()
             return Response(usuario_serializer.data)
         return Response(usuario_serializer.errors)
+
+@api_view(['GET','PUT','DELETE'])
+def detalle_usuario_api_view(request,pk=None):
+
+    if request.method == 'GET':
+        usuario = Usuario.objects.filter(id = pk).first()
+        usuario_serializer = UsuarioSerializer(usuario)
+        return Response(usuario_serializer.data)
+
+    elif request.method == 'PUT':
+        usuario = Usuario.objects.filter(id = pk).first()
+        usuario_serializer = UsuarioSerializer(usuario, data = request.data)
+        if usuario_serializer.is_valid():
+            usuario_serializer.save()
+            return Response(usuario_serializer.data)
+        return Response(usuario_serializer.errors)
+
+    elif request.method == 'DELETE':
+        usuario = Usuario.objects.filter(id = pk).first()
+        usuario.delete()
+        return Response('Usuario Eliminado Exitosamente!')
