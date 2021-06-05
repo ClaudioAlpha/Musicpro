@@ -15,6 +15,9 @@ class Producto(models.Model):
     precio_producto = models.IntegerField('Precio Producto',blank=False, null=False)
     historico = HistoricalRecords()
 
+    class Meta:
+        ordering = ['catalogo_producto','nombre_producto']
+
 
     def __str__(self):
         return '{}/{}/{}/{}/{}/{}'.format(
