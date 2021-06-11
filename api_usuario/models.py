@@ -47,6 +47,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'nombre', 'apellido']
+    """
+    def create(self,validated_data):
+        usuario = Usuario(**validated_data)
+        usuario.set_password(validated_data['password'])
+        usuario.save()
+        return usuario
+    """
 
     def __str__(self):
         return '{}/{}/{}'.format(self.nombre, self.apellido, self.email)
