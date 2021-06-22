@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ LOCAL_APPS = [
 THIRD_APPS = [
     'rest_framework',
     'simple_history',
+    'corsheaders',
 
 ]
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
+
 ]
 
 ROOT_URLCONF = 'musicpro2.urls'
@@ -116,6 +120,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Las rutas para las imágenes de cada registro o postre
+MEDIA_URL = '/Imagen_Producto/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Imagen_Producto')
+
+STATICFILES_DIR = os.path.join(BASE_DIR, '/static')
+
+CORS_ALLOWED_ORIGIN = [
+    "http://localhost:3000"
+
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
