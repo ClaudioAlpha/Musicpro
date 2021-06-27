@@ -32,6 +32,7 @@ BASE_APPS = [
 LOCAL_APPS = [
     'api_usuario',
     'api_producto',
+    'api_boleta',
 
 ]
 

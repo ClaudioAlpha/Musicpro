@@ -1,14 +1,14 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from api_producto.models import Producto
+from api_producto.models import Productos
 from api_producto.api.serializers import ProductoSerializer
 
 @api_view(['GET','POST'])
 def producto_api_view(request):
 
     if request.method == 'GET':
-        productos = Producto.objects.all()
+        productos = Productos.objects.all()
         productos_serializer = ProductoSerializer(productos, many=True)
         return Response(productos_serializer.data)
 
@@ -23,12 +23,12 @@ def producto_api_view(request):
 def detalle_producto_api_view(request,pk=None):
 
     if request.method == 'GET':
-        producto = Producto.objects.filter(sku = pk).first()
+        producto = Productos.objects.filter(sku = pk).first()
         producto_serializer = ProductoSerializer(producto)
         return Response(producto_serializer.data)
 
     elif request.method == 'PUT':
-        producto = Producto.objects.filter(sku = pk).first()
+        producto = Productos.objects.filter(sku = pk).first()
         producto_serializer = ProductoSerializer(producto, data = request.data)
         if producto_serializer.is_valid():
             producto_serializer.save()
@@ -36,6 +36,6 @@ def detalle_producto_api_view(request,pk=None):
         return Response(producto_serializer.errors)
 
     elif request.method == 'DELETE':
-        producto = Producto.objects.filter(sku = pk).first()
+        producto = Productos.objects.filter(sku = pk).first()
         producto.delete()
         return Response('Producto Eliminado Exitosamente!')

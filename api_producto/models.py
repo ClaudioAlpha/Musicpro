@@ -2,58 +2,45 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 
 
-# Categorias de productos.
-class Catalogo(models.Model):
-    nombre_catalogo = models.CharField(max_length=50)
-    feature = models.BooleanField(default=False)
-    historico = HistoricalRecords()
-    def __str__(self):
-        return self.nombre_catalogo
-
-    class Meta:
-        db_table = 'catalogo'
-        verbose_name = 'Catalogo'
-        verbose_name_plural = 'Catalogos'
-        ordering = ['nombre_catalogo']
 
 
 
-# Stock de productos.
-class StockProducto(models.Model):
-    cantidad = models.IntegerField()
-    historico = HistoricalRecords()
-    def __str__(self):
-        return self.nombre_catalogo
+class Productos(models.Model):
 
-    class Meta:
-        db_table = 'stock'
-        verbose_name = 'Stock'
-        verbose_name_plural = 'Stock Productos'
-        ordering = ['id']
+    SKU = models.IntegerField('sku', primary_key=True, blank=False, unique=True)
+    NombreProducto = models.CharField('Nombre Producto', max_length=50, blank=False, null=True, help_text='aqui va el nombre')
+    ModeloProducto = models.CharField('Modelo Producto', max_length=50, blank=False, null=True)
+    MarcaProducto = models.CharField('Marca Producto', max_length=50, blank=False, null=True)
+    Descripcion = models.TextField('Descripcion Producto', max_length=300, blank=False, null=True)
 
-# definir opciones del catalogo
 
-class Producto(models.Model):
-
-    sku = models.IntegerField('SKU', primary_key=True, unique=True)
-    nombre_producto = models.CharField('Nombre Producto', max_length=50, blank=False, null=False)
-    modelo_producto = models.CharField('Modelo Producto', max_length=50, blank=False, null=False)
-    marca_producto = models.CharField('Marca Producto', max_length=50, blank=False, null=False)
-    caract_producto = models.TextField('Caracteristicas Producto', blank=False, null=False)
-    catalogo_producto = models.ForeignKey(Catalogo, on_delete=models.CASCADE)
+    CATALOGO_CHOICES = (
+                ('Guitarras Acusticas','Guitarras Acusticas'),
+                ('Guitarras Electricas','Guitarras Electricas'),
+                ('Bajos Cuatro Cuerdas', 'Bajos Cuatro Cuerdas'),
+                ('Bajos Cinco Cuerdas', 'Bajos Cinco Cuerdas'),
+                ('Bajos Activos', 'Bajos Activos'),
+                ('Bajos Pasivos', 'Bajos Pasivos'),
+                ('Piano Media Cola', 'Piano Media Cola'),
+                ('PianoCola Entera','PianoCola Entera'),
+                ('Pianolas','Pianolas'),
+                ('Baterias Acusticas','Baterias Acusticas'),
+                ('Baterias Electricas','Baterias Electricas'),
+                ('Pianolas','Pianolas'),
+                ('Cabezales','Cabezales'),
+                ('Cajas','Cajas'),
+                )
+    Catalogo = models.CharField(max_length=60, choices=CATALOGO_CHOICES, default=None, blank=False, null=True)
     imagen = models.FileField('Imagen de Producto', upload_to='Imagen_Producto/', blank=True, null=True)
-    precio_producto = models.IntegerField('Precio Producto',blank=False, null=False)
+    StockProducto = models.CharField('Stock Producto', max_length=50, blank=False, null=True)
+    ValorProducto = models.IntegerField('Valor Producto',blank=False, null=False)
     historico = HistoricalRecords()
 
     class Meta:
-        ordering = ['catalogo_producto','nombre_producto']
-
+        db_table = 'Productos'
+        verbose_name = 'Productos'
+        verbose_name_plural = 'Productos'
+        ordering = ['SKU']
 
     def __str__(self):
-        return '{}/{}/{}/{}/{}/{}'.format(
-            self.sku,
-            self.nombre_producto,
-            self.modelo_producto,
-            self.marca_producto,
-            self.catalogo_producto,
-            self.imagen)
+        return '{}/{}/{}/{}/{}/{}/{}/{}/{}' .format(self.SKU, self.NombreProducto, self.ModeloProducto, self.MarcaProducto, self.Descripcion, self.Catalogo, self.imagen, self.StockProducto, self.ValorProducto)
